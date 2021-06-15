@@ -4,7 +4,7 @@ $pageTitles = array(
     'login' => "Login",
     "profile" => "My Profile",
     "register" => "Register", // Page title for Regiser
-    "changePassword" => "Change Passwword"
+    "changePassword" => "Change Password"
 );
 $pageTitle = isset($pageTitles[$module]) ? $pageTitles[$module] : null;
 
