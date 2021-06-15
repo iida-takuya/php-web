@@ -7,3 +7,4 @@ $dbConfig = [
     "password" => "",
     "db_name" => "php_web"
 ];
+?>

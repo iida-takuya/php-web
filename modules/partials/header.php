@@ -1,81 +1,74 @@
 <?php
-    // Define an array to contain page titles
-    $pageTitles = array(
-        'home' => "Home",
-        "profile" => "My Profile",
-        "register" => "Regiser"
-    );
-    // Get page title depend on what is using module
-    $pageTitle = array_key_exists($module, $pageTitles) ? $pageTitles[$module] : null;
+$pageTitles = array(
+    'home' => "Home",
+    'login' => "Login",
+    "profile" => "My Profile",
+    "register" => "Register", // Page title for Regiser
+    "changePassword" => "Change Passwword"
+);
+$pageTitle = isset($pageTitles[$module]) ? $pageTitles[$module] : null;
 
-    // Get session for checking user logged-in or not
-    $userId = array_key_exists('login_user_id', $_SESSION) ? $_SESSION['login_user_id'] : null;
-    // Default, user is not logged-in
-    $user = false;
-    if ($userId) {
-        // query user data by $username and $password
-        $sql = "SELECT id, username, email, fullname 
-            FROM users 
-            WHERE id = $userId
-            LIMIT 0,1";
+$userId = isset($_SESSION["login_user_id"]) ? $_SESSION["login_user_id"] : null;
 
-        $result = $mysql->query($sql);
-        $user = $result->fetch_array() ?? false;
-    }
+$user = false;
 
-    // Define fullname to show on header
-    $fullname = $user ? $user['fullname'] : 'Guest';
+if ($userId) {
+    $sql = "SELECT id, username, email, fullname, password
+    FROM users
+    WHERE id = $userId
+    LIMIT 0,1";
+
+    $result = $mysql->query($sql);
+
+    $user = $result->fetch_array() ?? false;
+}
+
+$fullname = $user['fullname'] ? $user['fullname'] : 'Guest';
+
+$loginOrLogout = $user['fullname'] ? 'Logout' : 'Login';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="normalize.css">
-        <meta charset="utf-8">
-        <!-- use defined variable to render page title in HTML -->
-        <title><?php echo $pageTitle; ?></title>
-        <link rel="stylesheet" href="./assets/css/index.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-        <script src="./assets/js/index.js"></script>
-    </head>
-    <body>
-        <!-- The Header -->
-        <header>
-        <div>
-            <?php if(array_key_exists('login_user_id', $_SESSION)): ?>
-                <h4>The logo<?php echo $_SESSION['login_user_id']; ?> </h4>
-            <?php else: ?>
-                <h4>The logo</h4>
-            <?php endif ?>
+  <head>
+    <meta charset="utf-8">
+    <title><?php echo $pageTitle; ?></title>
+    <link rel="stylesheet", href="./assets/css/index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="./assets/js/index.js"></script>
+  </head>
+  <body>
+    <header>
+        <div id="logo">
+            <h4>The logo<?php echo $userId; ?></h4>
         </div>
-        <div>
-                <h2 class="slogan">The header slogan</h2>
-        </div>
+        <div id="slogan">The header slogan</div>
         <div id="form">
             <ul>
                 <li>Hi <span><?php echo $fullname; ?></span></li>
-                <li><a href="javascript:void(0)" onclick="showLoginForm()">Login</a></li>
+                <li><a href=<?php if ($loginOrLogout === 'Login') {echo "javascript:void(0)";} else {echo "./index.php?m=logout";} ?> id="form1" onclick=<?php if ($loginOrLogout === 'Login'){echo "showLoginForm()";} ?>><?php echo $loginOrLogout ?></a></li>
             </ul>
-
-            <form id="login" action="index.php?m=login" method="post">
-                <input type="text" name="username" placeholder="User name" />
-                <input type="password" name="password" placeholder="Password"/>
-                <label><input type="checkbox" name="rememberUsername" />Remember user name </label>
-                <button type="submit" name="Login">Login</button>
+            <form id="login" action="./index.php?m=login" method="post">
+                <input type="text" name="username" placeholder="User name">
+                <input type="password" id="login1" name="password" placeholder="Password">
+                <i class="material-icons" id="passwordIcon" onclick="hidePassword()">remove_red_eye</i>
+                <label><input type="checkbox" name="rememberUsername">Remember user name</label>
+                <button type="submit" name="login">Login</button>
             </form>
             <form method="GET" id="search">
                 <input type="text" name="keyword" />
                 <i class="material-icons">search</i>
             </form>
         </div>
-        </header>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="./index.php">Home</a></li>
+            <li><a href="./index.php?m=register"><?php if ($loginOrLogout === 'Login') {echo "Register";} ?></a></li>
+            <li><a href="./index.php?m=profile"><?php if ($loginOrLogout === 'Logout') {echo "My Profile";} ?></a></li>
+            <li><a href="./index.php?m=changePassword"><?php if ($loginOrLogout === 'Logout') {echo "Change Password";} ?></a></li>
+        </ul>
+    </nav>
 
-        <!-- The menu -->
-        <nav>
-            <ul>
-                <li><a href="./index.php">Home</a></li>
-                <li><a href="./index.php?m=register">Register</a></li>
-                <li><a href="./index.php?m=profile">My Profile</a></li>
-            </ul>
-        </nav>
+
 

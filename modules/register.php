@@ -1,7 +1,9 @@
 <?php
+if ($loginOrLogout === 'Logout') {
+    header('Location: index.php');
+}
 // Define variable to check if user is not registered, show register form
-$isSuccess = isset($_GET['success']) ? $_GET['success']: null;
-
+$isSuccess = isset($_GET['success']) ? $_GET['success'] : null;
 // Receive post data
 if (!empty($_POST)) {
     // Receive post form dat   a
@@ -13,7 +15,7 @@ if (!empty($_POST)) {
     
     // Define and execute SQL Query
     $sql = "INSERT INTO users(fullname, username, email, password)
-        VALUE('$fullname', '$username', '$email', ' ')";
+        VALUE('$fullname', '$username', '$email', '$password')";
 
     // Define an array to contain errors when execute query,
     //  if there are errors, we will ouput to screen
@@ -48,7 +50,7 @@ if (!empty($_POST)) {
             <form method="post" class="form-register">
                 <p>
                     <label>Username: </label>
-                    <input type="text" name="fullname" />
+                    <input type="text" name="username" />
                 </p>
                 <p>
                     <label>Email: </label>
@@ -72,4 +74,3 @@ if (!empty($_POST)) {
     <!-- embed sidbar.php -->
     <?php require __DIR__. '/partials/sidebar.php'; ?>
 </div>
-
