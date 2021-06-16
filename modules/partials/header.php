@@ -4,7 +4,7 @@ $pageTitles = array(
     'login' => "Login",
     "profile" => "My Profile",
     "register" => "Register", // Page title for Regiser
-    "changePassword" => "Change Password"
+    "change_password" => "Change Password"
 );
 $pageTitle = isset($pageTitles[$module]) ? $pageTitles[$module] : null;
 
@@ -66,7 +66,7 @@ $loginOrLogout = $user['fullname'] ? 'Logout' : 'Login';
             <li><a href="./index.php">Home</a></li>
             <li><a href="./index.php?m=register"><?php if ($loginOrLogout === 'Login') {echo "Register";} ?></a></li>
             <li><a href="./index.php?m=profile"><?php if ($loginOrLogout === 'Logout') {echo "My Profile";} ?></a></li>
-            <li><a href="./index.php?m=changePassword"><?php if ($loginOrLogout === 'Logout') {echo "Change Password";} ?></a></li>
+            <li><a href="./index.php?m=change_password"><?php if ($loginOrLogout === 'Logout') {echo "Change Password";} ?></a></li>
         </ul>
     </nav>
 
