@@ -6,6 +6,7 @@
         <h3>Users List </h3>
         <?php
             try {
+                $sql = "SELECT * FROM users";
                 $result = $mysql->query($sql);
             } catch (Exception $e) {
                 echo "<p>Error: $e->getMessage()</p>";
